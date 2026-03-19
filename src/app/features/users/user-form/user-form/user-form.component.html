@@ -1,0 +1,147 @@
+<h1>Arjun</h1>
+
+<div class="user-form-container">
+
+  <p-toast></p-toast>
+
+  <p-card>
+
+    <ng-template pTemplate="title">
+      <div class="form-header">
+        <i class="pi pi-user" style="font-size: 1.5rem;"></i>
+        <span>{{ isEditMode ? 'Edit User' : 'Create New User' }}</span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="content">
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-grid">
+
+          <!-- First Name -->
+          <div class="field">
+            <label for="firstName">
+              First Name <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="firstName"
+              formControlName="firstName"
+              placeholder="Enter first name"
+              class="w-full"
+              [ngClass]="{'ng-invalid': userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched}" />
+            
+            <small class="error-msg"
+              *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+              <span *ngIf="userForm.get('firstName')?.errors?.['required']">First name is required</span>
+              <span *ngIf="userForm.get('firstName')?.errors?.['minlength']">Minimum 2 characters required</span>
+            </small>
+          </div>
+
+          <!-- Last Name -->
+          <div class="field">
+            <label for="lastName">
+              Last Name <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="lastName"
+              formControlName="lastName"
+              placeholder="Enter last name"
+              class="w-full"
+              [ngClass]="{'ng-invalid': userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched}" />
+          </div>
+
+          <!-- Email -->
+          <div class="field">
+            <label for="email">
+              Email <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter email"
+              class="w-full"
+              [ngClass]="{'ng-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched}" />
+          </div>
+
+          <!-- Phone -->
+          <div class="field">
+            <label for="phone">
+              Phone <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="phone"
+              formControlName="phone"
+              placeholder="Enter phone"
+              class="w-full"
+              [ngClass]="{'ng-invalid': userForm.get('phone')?.invalid && userForm.get('phone')?.touched}" />
+          </div>
+
+          <!-- Password -->
+          <div class="field" *ngIf="!isEditMode">
+            <label for="password">
+              Password <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Enter password"
+              class="w-full"
+              [ngClass]="{'ng-invalid': userForm.get('password')?.invalid && userForm.get('password')?.touched}" />
+          </div>
+
+          <!-- Role -->
+          <div class="field">
+            <label for="role">
+              Role <span class="required">*</span>
+            </label>
+
+            <p-dropdown
+              id="role"
+              formControlName="role"
+              [options]="roles"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select Role"
+              class="w-full"
+              [ngClass]="{'ng-invalid': userForm.get('role')?.invalid && userForm.get('role')?.touched}">
+            </p-dropdown>
+
+          </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-actions">
+
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            icon="pi pi-times"
+            class="p-button-secondary"
+            (click)="onCancel()">
+          </button>
+
+          <button
+            pButton
+            type="submit"
+            [label]="isEditMode ? 'Update User' : 'Create User'"
+            [icon]="isEditMode ? 'pi pi-check' : 'pi pi-plus'"
+            [disabled]="userForm.invalid">
+          </button>
+
+        </div>
+
+      </form>
+    </ng-template>
+
+  </p-card>
+
+</div>
