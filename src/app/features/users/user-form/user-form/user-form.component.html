@@ -64,6 +64,7 @@
               formControlName="email"
               placeholder="Enter email"
               class="w-full"
+                [readonly]="isEditMode"
               [ngClass]="{'ng-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched}" />
           </div>
 
@@ -82,8 +83,8 @@
           </div>
 
           <!-- Password -->
-          <div class="field" *ngIf="!isEditMode">
-            <label for="password">
+          <div class="field" *ngIf="!isEditMode" >
+            <label for="password">  
               Password <span class="required">*</span>
             </label>
             <input
