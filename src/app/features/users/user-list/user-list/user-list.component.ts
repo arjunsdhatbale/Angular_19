@@ -96,4 +96,8 @@ confirmDelete(user: User): void {
     };
     return map[status] || 'info';
   }
+
+  navigateToDetail(user: User): void {
+  this.router.navigate(['/users/detail', user.id]);
+}
 }

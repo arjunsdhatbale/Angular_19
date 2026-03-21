@@ -1,0 +1,173 @@
+<p>user-detail works!</p>
+<!-- features/users/user-detail/user-detail.component.html -->
+<div class="user-detail-container">
+
+  <p-toast />
+  <p-confirmDialog />
+
+  <!-- Header Actions -->
+  <div class="page-header">
+    <p-button
+      icon="pi pi-arrow-left"
+      label="Back to Users"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="navigateBack()" />
+
+    <div class="header-actions" *ngIf="user">
+      <p-button
+        icon="pi pi-pencil"
+        label="Edit"
+        severity="info"
+        (onClick)="navigateToEdit()" />
+      <p-button
+        icon="pi pi-trash"
+        label="Delete"
+        severity="danger"
+        [outlined]="true"
+        (onClick)="confirmDelete()" />
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem;"></i>
+    <p>Loading user details...</p>
+  </div>
+
+  <!-- User Detail Card -->
+  <div class="detail-content" *ngIf="user && !loading">
+
+    <!-- Profile Card -->
+    <p-card styleClass="profile-card">
+      <div class="profile-header">
+
+        <!-- Avatar -->
+        <div class="avatar">
+          <span class="initials">{{ getInitials() }}</span>
+        </div>
+
+        <!-- Name and Tags -->
+        <div class="profile-info">
+          <h2 class="full-name">{{ getFullName() }}</h2>
+          <p class="email">
+            <i class="pi pi-envelope"></i>
+            {{ user.email }}
+          </p>
+          <div class="tags">
+            <p-tag
+              [value]="user.role"
+              [severity]="getRoleSeverity(user.role)" />
+            <p-tag
+              [value]="user.status"
+              [severity]="getStatusSeverity(user.status)" />
+          </div>
+        </div>
+
+      </div>
+    </p-card>
+
+    <!-- Details Card -->
+    <p-card header="User Information" styleClass="info-card">
+
+      <div class="info-grid">
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-id-card"></i> User ID
+          </span>
+          <span class="info-value"># {{ user.id }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-user"></i> First Name
+          </span>
+          <span class="info-value">{{ user.firstName }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-user"></i> Last Name
+          </span>
+          <span class="info-value">{{ user.lastName }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-envelope"></i> Email
+          </span>
+          <span class="info-value">{{ user.email }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-phone"></i> Phone
+          </span>
+          <span class="info-value">{{ user.phone }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-shield"></i> Role
+          </span>
+          <span class="info-value">
+            <p-tag
+              [value]="user.role"
+              [severity]="getRoleSeverity(user.role)" />
+          </span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-circle"></i> Status
+          </span>
+          <span class="info-value">
+            <p-tag
+              [value]="user.status"
+              [severity]="getStatusSeverity(user.status)" />
+          </span>
+        </div>
+
+      </div>
+
+      <p-divider />
+
+      <!-- Timestamps -->
+      <div class="info-grid">
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-calendar-plus"></i> Created At
+          </span>
+          <span class="info-value">
+            {{ user.createdAt | date: 'dd MMM yyyy, hh:mm a' }}
+          </span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">
+            <i class="pi pi-calendar"></i> Updated At
+          </span>
+          <span class="info-value">
+            {{ user.updatedAt | date: 'dd MMM yyyy, hh:mm a' }}
+          </span>
+        </div>
+
+      </div>
+
+    </p-card>
+
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!user && !loading">
+    <i class="pi pi-user-minus"></i>
+    <p>User not found.</p>
+    <p-button
+      label="Back to Users"
+      icon="pi pi-arrow-left"
+      (onClick)="navigateBack()" />
+  </div>
+
+</div>

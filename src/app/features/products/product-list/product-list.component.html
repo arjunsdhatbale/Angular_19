@@ -1,0 +1,137 @@
+<!-- features/products/product-list/product-list.component.html -->
+<div class="product-list-container">
+
+  <p-toast />
+  <p-confirmDialog />
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>
+        <i class="pi pi-box"></i>
+        Product Management
+      </h2>
+      <span class="total-badge">{{ products().length }} Products</span>
+    </div>
+    <p-button
+      label="Add Product"
+      icon="pi pi-plus"
+      (onClick)="navigateToCreate()" />
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+
+    <p-iconfield>
+      <p-inputicon styleClass="pi pi-search" />
+      <input
+        pInputText
+        [(ngModel)]="searchKeyword"
+        placeholder="Search products..."
+        (input)="onSearch()" />
+    </p-iconfield>
+
+    <p-dropdown
+      [(ngModel)]="selectedCategory"
+      [options]="categories()"
+      placeholder="All Categories"
+      [showClear]="true"
+      (onChange)="onCategoryChange()" />
+
+    <p-button
+      icon="pi pi-refresh"
+      severity="secondary"
+      [outlined]="true"
+      pTooltip="Clear Filters"
+      (onClick)="clearFilters()" />
+
+  </div>
+
+  <!-- Table -->
+  <p-table
+    [value]="products()"
+    [loading]="loading()"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+    styleClass="p-datatable-striped p-datatable-gridlines">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+        <th>Image</th>
+        <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
+        <th pSortableColumn="category">Category <p-sortIcon field="category" /></th>
+        <th pSortableColumn="price">Price <p-sortIcon field="price" /></th>
+        <th pSortableColumn="stock">Stock <p-sortIcon field="stock" /></th>
+        <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.id }}</td>
+        <td>
+          <img
+            *ngIf="product.imageUrl"
+            [src]="product.imageUrl"
+            [alt]="product.name"
+            class="product-thumbnail" />
+          <i
+            *ngIf="!product.imageUrl"
+            class="pi pi-image product-placeholder"></i>
+        </td>
+        <td>{{ product.name }}</td>
+        <td>
+          <span class="category-badge">{{ product.category }}</span>
+        </td>
+        <td>
+          <strong>₹ {{ product.price | number: '1.2-2' }}</strong>
+        </td>
+        <td>
+          <span [class.low-stock]="product.stock <= 10">
+            {{ product.stock }}
+          </span>
+        </td>
+        <td>
+          <p-tag
+            [value]="product.status"
+            [severity]="getStatusSeverity(product.status)" />
+        </td>
+        <td>
+          <div class="action-buttons">
+            <p-button
+              icon="pi pi-eye"
+              [rounded]="true"
+              [text]="true"
+              severity="success"
+              (onClick)="navigateToDetail(product)" />
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [text]="true"
+              severity="info"
+              (onClick)="navigateToEdit(product)" />
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+              (onClick)="confirmDelete(product)" />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" class="text-center">No products found.</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+</div>

@@ -11,6 +11,7 @@
       icon="pi pi-plus"
       (onClick)="navigateToCreate()" />
   </div>
+  
 
   <p-table
     [value]="users()"
@@ -59,10 +60,17 @@
             (onClick)="navigateToEdit(user)" />
           <p-button
             icon="pi pi-trash"
-            [rounded]="true"
+            [rounded]="true"  
             [text]="true"
             severity="danger"
             (onClick)="confirmDelete(user)" />
+            <p-button 
+            icon="pi pi-eye" 
+            [rounded]="true" 
+            [text]="true" 
+            severity="success" 
+            (onClick)="navigateToDetail(user)" />
+            
         </td>
       </tr>
     </ng-template>
