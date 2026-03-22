@@ -1,0 +1,124 @@
+<!-- notification/notification.component.html -->
+<div class="notification-container">
+
+  <p-toast />
+
+  <p-card>
+
+    <!-- ── Header ── -->
+    <div class="page-header">
+      <div class="header-left">
+        <i class="pi pi-bell" style="font-size:1.5rem"></i>
+        <span style="font-size:1.2rem; font-weight:600;">
+          Notification Center
+        </span>
+        <span class="unread-badge" *ngIf="unreadCount() > 0">
+          {{ unreadCount() }}
+        </span>
+      </div>
+
+      <div class="connection-status">
+        <span
+          class="status-dot"
+          [class.connected]="isConnected"
+          [class.disconnected]="!isConnected">
+        </span>
+        <span class="status-text">
+          {{ isConnected ? 'Connected ✅' : 'Disconnected ❌' }}
+        </span>
+      </div>
+    </div>
+
+    <p-divider />
+
+    <!-- ── Send Section ── -->
+    <div class="send-section">
+      <h4>
+        <i class="pi pi-send"></i>
+        Send Notification
+      </h4>
+
+      <div class="send-input-row">
+        <input
+          pInputText
+          [(ngModel)]="messageInput"
+          placeholder="Type your message here..."
+          (keyup.enter)="sendMessage()"
+          [disabled]="!isConnected"
+          class="message-input" />
+
+        <p-button
+          label="Send"
+          icon="pi pi-send"
+          (onClick)="sendMessage()"
+          [disabled]="!isConnected || !messageInput.trim()" />
+      </div>
+
+      <small class="not-connected-msg" *ngIf="!isConnected">
+        <i class="pi pi-exclamation-triangle"></i>
+        WebSocket not connected. Make sure Spring Boot is running on port 8080.
+      </small>
+    </div>
+
+    <p-divider />
+
+    <!-- ── List Header ── -->
+    <div class="list-header">
+      <h4>
+        <i class="pi pi-inbox"></i>
+        Received Notifications
+        <span class="count-label">({{ notifications().length }})</span>
+      </h4>
+
+      <div class="list-actions" *ngIf="notifications().length > 0">
+        <p-button
+          label="Mark all read"
+          icon="pi pi-check"
+          severity="secondary"
+          [text]="true"
+          (onClick)="markAllRead()" />
+        <p-button
+          label="Clear all"
+          icon="pi pi-trash"
+          severity="danger"
+          [text]="true"
+          (onClick)="clearAll()" />
+      </div>
+    </div>
+
+    <!-- ── Notification Items ── -->
+    <div class="notification-list">
+
+      <div
+        *ngFor="let notif of notifications(); let i = index"
+        class="notification-item"
+        [class.unread]="i < unreadCount()">
+
+        <div class="notif-icon">
+          <i class="pi pi-bell"></i>
+        </div>
+
+        <div class="notif-content">
+          <p class="notif-message">{{ notif.message }}</p>
+          <span class="notif-time">
+            <i class="pi pi-clock"></i>
+            {{ notif.timestamp }}
+          </span>
+        </div>
+
+        <span class="new-badge" *ngIf="i < unreadCount()">NEW</span>
+
+      </div>
+
+      <!-- ── Empty State ── -->
+      <div class="empty-state" *ngIf="notifications().length === 0">
+        <i class="pi pi-bell-slash"></i>
+        <p>No notifications yet.</p>
+        <small>Type a message above and click Send to test.</small>
+      </div>
+
+    </div>
+
+  </p-card>
+
+</div>

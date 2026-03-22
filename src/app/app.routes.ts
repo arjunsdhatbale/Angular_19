@@ -20,5 +20,16 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'products',
     pathMatch: 'full'
+  },
+  {
+    path: 'notifications',
+    loadChildren: () =>
+      import('./features/notifications/notification.routes')
+        .then(m => m.notificationRoutes)
+  },
+  {
+    path: '',
+    redirectTo: 'notifications',  // ← only ONE empty path redirect
+    pathMatch: 'full'
   }
 ];
