@@ -1,0 +1,240 @@
+// src/app/layout/main-layout/main-layout.component.scss
+
+// ── Variables ────────────────────────────────────
+$sidebar-width:       240px;
+$sidebar-closed:      0px;
+$navbar-height:       60px;
+$sidebar-bg:          #1e1e2e;
+$sidebar-text:        #cdd6f4;
+$sidebar-hover:       #313244;
+$sidebar-active-bg:   #89b4fa;
+$sidebar-active-text: #1e1e2e;
+
+// ── App Layout ───────────────────────────────────
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// ── Top Navbar ───────────────────────────────────
+.top-navbar {
+  height: $navbar-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background: var(--p-content-background);
+  border-bottom: 1px solid var(--p-content-border-color);
+  z-index: 100;
+  flex-shrink: 0;
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--p-primary-color);
+
+      i { font-size: 1.4rem; }
+    }
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .nav-icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--p-text-secondary-color);
+      transition: background 0.2s;
+
+      &:hover { background: var(--p-content-hover-background); }
+
+      i { font-size: 1.1rem; }
+
+      .nav-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 1px 4px;
+        border-radius: 10px;
+        min-width: 16px;
+        text-align: center;
+      }
+    }
+
+    .nav-avatar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+
+      .nav-username {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--p-text-color);
+
+        @media (max-width: 576px) { display: none; }
+      }
+    }
+  }
+}
+
+// ── App Body ─────────────────────────────────────
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+// ── Sidebar ──────────────────────────────────────
+.app-sidebar {
+  background: $sidebar-bg;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  height: 100%;
+
+  &.sidebar-open  { width: $sidebar-width; }
+  &.sidebar-closed { width: $sidebar-closed; }
+
+  // ── Nav Items ──────────────────────────────────
+  .sidebar-nav {
+    flex: 1;
+    padding: 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    overflow-y: auto;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: $sidebar-text;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    position: relative;
+
+    i {
+      font-size: 1rem;
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nav-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .nav-badge-inline {
+      margin-left: auto;
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    &:hover {
+      background: $sidebar-hover;
+      color: #fff;
+    }
+
+    &.active {
+      background: $sidebar-active-bg;
+      color: $sidebar-active-text;
+      font-weight: 600;
+    }
+  }
+
+  // ── Sidebar Footer ─────────────────────────────
+  .sidebar-footer {
+    padding: 0.5rem;
+    flex-shrink: 0;
+
+    .footer-user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+
+      .footer-user-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        .footer-name {
+          font-size: 0.82rem;
+          font-weight: 600;
+          color: $sidebar-text;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .footer-role {
+          font-size: 0.72rem;
+          color: #6c7086;
+        }
+      }
+    }
+  }
+}
+
+// ── Page Content ─────────────────────────────────
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--p-surface-ground);
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+
+  &.content-with-sidebar { margin-left: 0; }
+  &.content-expanded      { margin-left: 0; }
+}
+
+// ── Mobile ───────────────────────────────────────
+@media (max-width: 768px) {
+  .app-sidebar {
+    position: fixed;
+    top: $navbar-height;
+    left: 0;
+    height: calc(100vh - #{$navbar-height});
+    z-index: 99;
+
+    &.sidebar-open  { width: $sidebar-width; }
+    &.sidebar-closed { width: 0; }
+  }
+}

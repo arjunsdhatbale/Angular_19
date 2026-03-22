@@ -1,25 +1,26 @@
 import { Routes } from '@angular/router';
-
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 export const routes: Routes = [
+  {
+     path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/dashboard.component')
+            .then(m => m.DashboardComponent)
+      },
+  
     {
         path: 'users',
         loadChildren: () =>
             import('./features/users/users.routes').then(m => m.userRoutes)
     },
     {
-        path: '',
-        redirectTo: 'users',
-        pathMatch: 'full'   
-    },
-    {
     path: 'products',
     loadChildren: () =>
       import('./features/products/products.routes').then(m => m.productRoutes)
-  },
-  {
-    path: '',
-    redirectTo: 'products',
-    pathMatch: 'full'
   },
   {
     path: 'notifications',
@@ -29,7 +30,9 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'notifications',  // ← only ONE empty path redirect
+    redirectTo: 'dashboard',
     pathMatch: 'full'
+  }
+]
   }
 ];

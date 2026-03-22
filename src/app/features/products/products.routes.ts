@@ -10,12 +10,12 @@ export const productRoutes: Routes = [
   {
     path: 'create',
     loadComponent: () =>
-      import('./product-form/product-form/product-form.component').then(m => m.ProductFormComponent)
+      import('./product-form/product-form.component').then(m => m.ProductFormComponent)
   },
   {
     path: 'edit/:id',
     loadComponent: () =>
-      import('./product-form/product-form/product-form.component').then(m => m.ProductFormComponent)
+      import('./product-form/product-form.component').then(m => m.ProductFormComponent)
   }
 //   {
 //     path: 'detail/:id',

@@ -17,6 +17,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { ProductService } from '../services/product.service';
 import { ProductStore } from '../../../store/product.store';
 import { Product } from '../models/product.model';
+import { Select } from "primeng/select";
 
 @Component({
   selector: 'app-product-list',
@@ -28,12 +29,13 @@ import { Product } from '../models/product.model';
     ButtonModule,
     TagModule,
     InputTextModule,
-    DropdownModule,
+    Select,
     ToastModule,
     ConfirmDialogModule,
     IconFieldModule,
-    InputIconModule
-  ],
+    InputIconModule,
+    Select
+],
   providers: [MessageService, ConfirmationService],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'

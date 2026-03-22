@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,17 +8,17 @@ import { InputNumber } from 'primeng/inputnumber';
 import { Select } from 'primeng/select';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Divider } from 'primeng/divider';        // ✅ add this
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { ProductService } from '../../services/product.service';
-import { ProductStore } from '../../../../store/product.store';
- 
-
+import { ProductService } from '../services/product.service';
+import { ProductStore } from '../../../store/product.store';
 
 @Component({
   selector: 'app-product-form',
-   standalone: true,
-  imports: [CommonModule,
+  standalone: true,
+  imports: [
+    CommonModule,
     ReactiveFormsModule,
     InputText,
     Textarea,
@@ -27,25 +26,26 @@ import { ProductStore } from '../../../../store/product.store';
     Select,
     Button,
     Card,
-    Toast],
+    Divider,                                       // ✅ add this
+    Toast
+  ],
   providers: [MessageService],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
-export class ProductFormComponent implements OnInit{
-  
-  
-  private fb             = inject(FormBuilder);
-  private productService = inject(ProductService);
-  private productStore   = inject(ProductStore);
-  private router         = inject(Router);
-  private route          = inject(ActivatedRoute);
-  private messageService = inject(MessageService);
+export class ProductFormComponent implements OnInit {
+
+  private fb             = new FormBuilder();
+  private productService: ProductService;
+  private productStore:   ProductStore;
+  private router:         Router;
+  private route:          ActivatedRoute;
+  private messageService: MessageService;
 
   productForm!: FormGroup;
   isEditMode = false;
   productId!: number;
-  loading = false;
+  loading    = false;
 
   statusOptions = [
     { label: 'Active',       value: 'ACTIVE'       },
@@ -54,13 +54,29 @@ export class ProductFormComponent implements OnInit{
   ];
 
   categoryOptions = [
-    { label: 'Electronics',  value: 'Electronics'  },
-    { label: 'Clothing',     value: 'Clothing'     },
-    { label: 'Food',         value: 'Food'         },
-    { label: 'Books',        value: 'Books'        },
-    { label: 'Furniture',    value: 'Furniture'    },
-    { label: 'Other',        value: 'Other'        }
+    { label: 'Electronics', value: 'Electronics' },
+    { label: 'Clothing',    value: 'Clothing'    },
+    { label: 'Food',        value: 'Food'        },
+    { label: 'Books',       value: 'Books'       },
+    { label: 'Furniture',   value: 'Furniture'   },
+    { label: 'Other',       value: 'Other'       }
   ];
+
+  constructor(
+    fb:             FormBuilder,
+    productService: ProductService,
+    productStore:   ProductStore,
+    router:         Router,
+    route:          ActivatedRoute,
+    messageService: MessageService
+  ) {
+    this.fb             = fb;
+    this.productService = productService;
+    this.productStore   = productStore;
+    this.router         = router;
+    this.route          = route;
+    this.messageService = messageService;
+  }
 
   ngOnInit(): void {
     this.productId  = this.route.snapshot.params['id'];
@@ -70,7 +86,8 @@ export class ProductFormComponent implements OnInit{
       this.loadProductData();
     }
   }
-initForm(): void {
+
+  initForm(): void {
     this.productForm = this.fb.group({
       name:        ['', [Validators.required, Validators.minLength(2)]],
       description: ['', [Validators.maxLength(1000)]],
